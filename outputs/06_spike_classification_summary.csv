@@ -1,0 +1,3 @@
+regionid,spike_driver_classification,spike_intervals,average_rrp,max_rrp,average_supply_demand_gap,average_active_constraints,average_constraint_marginal_value,average_congestion_signal_count,average_absolute_price_spread
+NSW1,Constraint-driven,27,1522.0147822222223,9914.02372,2900.4005807407407,26.59259259259259,11.392471851851852,1.7037037037037037,1478.041334074074
+NSW1,Interconnector/congestion-driven,26,3346.608450384615,20300.0,3675.7213984615382,22.153846153846153,7.022438846153846,2.1923076923076925,3323.2169361538463

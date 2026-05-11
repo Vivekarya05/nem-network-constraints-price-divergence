@@ -1,0 +1,4 @@
+divergence_direction,intervals,average_price_spread,average_absolute_price_spread,max_absolute_price_spread,divergence_intervals,extreme_divergence_intervals
+NSW1 higher than VIC1,7003,48.14981170355562,48.14981170355562,20308.0,254,60
+No price spread,11,0.0,0.0,0.0,0,0
+VIC1 higher than NSW1,1049,-23.928260448045755,23.928260448045755,234.01791999999998,53,0

@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project 02 Combined Visual Report</title>
+  <style>
+    :root {
+      --ink: #111827;
+      --muted: #5f6f85;
+      --line: #dbe4ef;
+      --panel: #ffffff;
+      --bg: #f5f7fb;
+      --blue: #1d4ed8;
+      --green: #047857;
+      --red: #dc2626;
+      --purple: #7c3aed;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    header {
+      background: #071321;
+      color: white;
+      padding: 34px 42px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 32px;
+      letter-spacing: 0;
+    }
+
+    header p {
+      max-width: 1100px;
+      margin: 10px 0 0;
+      color: #c4d4ea;
+      font-size: 15px;
+    }
+
+    main {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 26px;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .kpi,
+    .chart-card,
+    .note-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 14px 36px rgba(15, 23, 42, 0.07);
+    }
+
+    .kpi {
+      padding: 16px;
+    }
+
+    .kpi .label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .kpi .value {
+      margin-top: 7px;
+      font-size: 27px;
+      font-weight: 850;
+    }
+
+    .kpi .note {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .note-card {
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .note-card h2 {
+      margin: 0 0 10px;
+      font-size: 22px;
+    }
+
+    .note-card ul {
+      margin: 10px 0 0;
+      padding-left: 20px;
+    }
+
+    .chart-card {
+      margin: 0 0 28px;
+      padding: 18px;
+      page-break-inside: avoid;
+    }
+
+    .chart-card h2 {
+      margin: 0;
+      font-size: 23px;
+    }
+
+    .chart-card p {
+      margin: 8px 0 14px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: 720px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: white;
+    }
+
+    iframe.short {
+      height: 610px;
+    }
+
+    .footer {
+      color: var(--muted);
+      font-size: 12px;
+      padding: 6px 0 34px;
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      header {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+
+      main {
+        max-width: none;
+        padding: 18px;
+      }
+
+      .summary {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .chart-card {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+
+      iframe {
+        height: 650px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Project 02: NEM Network Constraints & Price Divergence Intelligence System</h1>
+    <p>Combined visual report for NotebookLM. This report brings together all Plotly chart outputs from the project into one visual reference document.</p>
+  </header>
+
+  <main>
+    <section class="summary">
+      <div class="kpi">
+        <div class="label">Study Period</div>
+        <div class="value">Feb 2026</div>
+        <div class="note">2026-02-01 to 2026-03-01</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Focus Regions</div>
+        <div class="value">NSW1 / VIC1</div>
+        <div class="note">Regional price comparison</div>
+      </div>
+      <div class="kpi">
+        <div class="label">NSW1 Spikes</div>
+        <div class="value">53</div>
+        <div class="note">RRP above $300/MWh</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Divergence Events</div>
+        <div class="value">307</div>
+        <div class="note">Spread above $100/MWh</div>
+      </div>
+    </section>
+
+    <section class="note-card">
+      <h2>Visual Storyline</h2>
+      <p>The charts are designed to explain how market price behaviour, network constraints, interconnector flow, and regional price divergence connect to spike classifications and decision intelligence.</p>
+      <ul>
+        <li>NSW1 recorded spike intervals while VIC1 did not breach the selected $300/MWh threshold.</li>
+        <li>Constraint activity was elevated during NSW1 spike intervals, but marginal value and violation signals did not explain every spike on their own.</li>
+        <li>Broader interconnector congestion-style signals were present during most NSW1 spike intervals.</li>
+        <li>NSW1-VIC1 price divergence was material in concentrated periods, supporting the network-driven market interpretation.</li>
+      </ul>
+    </section>
+
+    <section class="chart-card">
+      <h2>1. RRP By Region With Spike Markers</h2>
+      <p>Shows NSW1 and VIC1 RRP over time with price spike intervals highlighted.</p>
+      <iframe src="../outputs/charts/01_rrp_by_region_with_spikes.html"></iframe>
+    </section>
+
+    <section class="chart-card">
+      <h2>2. NSW1 Vs VIC1 RRP Comparison</h2>
+      <p>Compares regional prices on the same time axis to show when prices move together or separate.</p>
+      <iframe src="../outputs/charts/02_nsw_vic_rrp_comparison.html"></iframe>
+    </section>
+
+    <section class="chart-card">
+      <h2>3. NSW1-VIC1 Price Spread</h2>
+      <p>Displays signed price spread and divergence thresholds for material and extreme separation.</p>
+      <iframe src="../outputs/charts/03_nsw_vic_price_spread.html"></iframe>
+    </section>
+
+    <section class="chart-card">
+      <h2>4. Constraint Activity Vs NSW1 RRP</h2>
+      <p>Compares NSW1 RRP against active constraint count to test whether spike periods align with higher constraint activity.</p>
+      <iframe src="../outputs/charts/04_constraint_activity_vs_nsw_rrp.html"></iframe>
+    </section>
+
+    <section class="chart-card">
+      <h2>5. VIC1-NSW1 Interconnector Flow</h2>
+      <p>Shows direct NSW-VIC interconnector flow behaviour and congestion-style signal intervals.</p>
+      <iframe src="../outputs/charts/05_vic_nsw_interconnector_flow.html"></iframe>
+    </section>
+
+    <section class="chart-card">
+      <h2>6. Congestion Signal Count</h2>
+      <p>Shows broader interconnector stress by counting how many interconnectors had congestion-style signals at each interval.</p>
+      <iframe src="../outputs/charts/06_congestion_signal_count.html"></iframe>
+    </section>
+
+    <section class="chart-card">
+      <h2>7. Spike Classification Summary</h2>
+      <p>Summarises classified spike events by likely market driver.</p>
+      <iframe class="short" src="../outputs/charts/07_spike_classification_summary.html"></iframe>
+    </section>
+
+    <section class="chart-card">
+      <h2>8. Demand And Price Overview</h2>
+      <p>Compares RRP and demand between NSW1 and VIC1, including spike markers and divergence periods where available.</p>
+      <iframe src="../outputs/charts/08_interactive_demand_price_overview_nsw_vic.html"></iframe>
+    </section>
+
+    <section class="note-card">
+      <h2>Final Analyst Message</h2>
+      <p>Project 02 demonstrates an end-to-end network intelligence workflow for the NEM. It starts with cleaned dispatch data, adds market and network features, classifies price spikes by likely driver, and translates those classifications into decision recommendations. The visual pack supports slide creation, study review, and dashboard design.</p>
+    </section>
+
+    <div class="footer">
+      Generated from local Project 02 Plotly chart outputs. Interactive HTML charts are stored under outputs/charts/.
+    </div>
+  </main>
+</body>
+</html>

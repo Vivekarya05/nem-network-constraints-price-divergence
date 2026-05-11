@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NEM Market Intelligence Platform Mockup</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    :root {
+      --bg: #eef3f8;
+      --panel: #ffffff;
+      --ink: #102033;
+      --muted: #65758b;
+      --line: #d6e0ec;
+      --nav: #0b1726;
+      --blue: #2563eb;
+      --green: #059669;
+      --amber: #d97706;
+      --red: #dc2626;
+      --purple: #7c3aed;
+      --cyan: #0891b2;
+      --shadow: 0 16px 42px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      min-height: 100vh;
+    }
+
+    aside {
+      background: var(--nav);
+      color: white;
+      padding: 24px 20px;
+    }
+
+    .brand {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      padding-bottom: 18px;
+      margin-bottom: 18px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 23px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .brand p {
+      color: #a9bdd6;
+      font-size: 13px;
+      line-height: 1.45;
+      margin: 10px 0 0;
+    }
+
+    label {
+      display: block;
+      margin: 16px 0 6px;
+      color: #b9c7d8;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    select,
+    input {
+      width: 100%;
+      height: 38px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 6px;
+      padding: 0 10px;
+      color: white;
+      background: rgba(255, 255, 255, 0.08);
+      font-size: 14px;
+    }
+
+    select option {
+      color: #111827;
+    }
+
+    .module-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .module {
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #d8e6f8;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .module.active {
+      background: #1d4ed8;
+      color: white;
+      border-color: #60a5fa;
+    }
+
+    main {
+      padding: 26px;
+      max-width: 1760px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .topbar h2 {
+      margin: 0;
+      font-size: 30px;
+    }
+
+    .topbar p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.45;
+      max-width: 900px;
+    }
+
+    .status {
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(135px, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .kpi,
+    .panel,
+    .case-card,
+    .rec-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .kpi {
+      padding: 15px;
+    }
+
+    .kpi .label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .kpi .value {
+      font-size: 25px;
+      font-weight: 850;
+      margin-top: 7px;
+    }
+
+    .kpi .note {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .case-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .case-card {
+      padding: 16px;
+      border-top: 5px solid var(--blue);
+    }
+
+    .case-card.network {
+      border-top-color: var(--purple);
+    }
+
+    .case-card.pv {
+      border-top-color: var(--green);
+    }
+
+    .case-card.ramp {
+      border-top-color: var(--amber);
+    }
+
+    .case-card h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    .case-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr 1fr;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .panel {
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .wide {
+      grid-column: 1 / -1;
+    }
+
+    .chart {
+      height: 390px;
+    }
+
+    .chart.short {
+      height: 320px;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+      margin: 24px 0 12px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .section-title span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .rec-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .rec-card {
+      padding: 16px;
+      border-left: 5px solid var(--blue);
+    }
+
+    .rec-card.network {
+      border-left-color: var(--purple);
+    }
+
+    .rec-card.pv {
+      border-left-color: var(--green);
+    }
+
+    .rec-card.risk {
+      border-left-color: var(--red);
+    }
+
+    .rec-card h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    .rec-card p {
+      margin: 8px 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-weight: 900;
+      font-size: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th,
+    td {
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f8fafc;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-size: 12px;
+    }
+
+    @media (max-width: 1250px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .kpi-grid,
+      .case-grid,
+      .grid-2,
+      .grid-3,
+      .rec-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside>
+      <div class="brand">
+        <h1>NEM Market Intelligence Platform</h1>
+        <p>Unified dashboard shell for price drivers, network divergence, rooftop PV impact, ramp risk, and decision recommendations.</p>
+      </div>
+
+      <label>Business Case</label>
+      <select>
+        <option>Executive Overview</option>
+        <option>Market Price Drivers</option>
+        <option>Network Constraints & Divergence</option>
+        <option>Rooftop PV Impact</option>
+        <option>Demand & Ramp Risk</option>
+        <option>Decision Intelligence</option>
+      </select>
+
+      <label>Date Range</label>
+      <input value="2026-02-01 to 2026-03-01" readonly />
+
+      <label>Region</label>
+      <select>
+        <option>All focus regions</option>
+        <option>NSW1</option>
+        <option>VIC1</option>
+        <option>QLD1</option>
+        <option>SA1</option>
+      </select>
+
+      <label>Interconnector</label>
+      <select>
+        <option>VIC1-NSW1</option>
+        <option>NSW1-QLD1</option>
+        <option>V-SA</option>
+        <option>All interconnectors</option>
+      </select>
+
+      <label>Event Type</label>
+      <select>
+        <option>All events</option>
+        <option>Price spike</option>
+        <option>Price divergence</option>
+        <option>Negative price</option>
+        <option>Ramp event</option>
+      </select>
+
+      <div class="module-list">
+        <div class="module active">Executive Overview</div>
+        <div class="module">Market Price Drivers</div>
+        <div class="module">Network & Divergence</div>
+        <div class="module">Rooftop PV Impact</div>
+        <div class="module">Demand Ramp Risk</div>
+        <div class="module">Recommendations</div>
+      </div>
+    </aside>
+
+    <main>
+      <div class="topbar">
+        <div>
+          <h2>Executive Overview</h2>
+          <p>One dashboard shell that can switch between business cases while sharing the same date, region, event, and confidence filters.</p>
+        </div>
+        <div class="status">Latest ETL: Success</div>
+      </div>
+
+      <section class="kpi-grid">
+        <div class="kpi">
+          <div class="label">Rows Processed</div>
+          <div class="value">7.9M</div>
+          <div class="note">Raw + analytics layer</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Avg NSW1 RRP</div>
+          <div class="value">$68</div>
+          <div class="note">Study period</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Price Spikes</div>
+          <div class="value">53</div>
+          <div class="note">Above $300/MWh</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Divergence</div>
+          <div class="value">148</div>
+          <div class="note">Spread above $100/MWh</div>
+        </div>
+        <div class="kpi">
+          <div class="label">PV Suppression</div>
+          <div class="value">Midday</div>
+          <div class="note">Price pressure window</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Open Risks</div>
+          <div class="value">12</div>
+          <div class="note">High confidence alerts</div>
+        </div>
+      </section>
+
+      <section class="case-grid">
+        <article class="case-card">
+          <h3>Market Price Drivers</h3>
+          <p>Explains price behaviour using demand, rooftop PV, net demand, ramps, volatility, and spike flags.</p>
+        </article>
+        <article class="case-card network">
+          <h3>Network & Divergence</h3>
+          <p>Links constraint activity, interconnector flow, and NSW1-VIC1 spread to price outcomes.</p>
+        </article>
+        <article class="case-card pv">
+          <h3>Rooftop PV Impact</h3>
+          <p>Tracks midday price suppression, negative price risk, and net demand shape.</p>
+        </article>
+        <article class="case-card ramp">
+          <h3>Demand Ramp Risk</h3>
+          <p>Flags sharp demand and net demand changes that increase dispatch volatility exposure.</p>
+        </article>
+      </section>
+
+      <div class="section-title">
+        <h2>Shared Market Lens</h2>
+        <span>Same time axis, multiple business-case signals</span>
+      </div>
+
+      <section class="grid-2">
+        <div class="panel wide">
+          <div id="marketLens" class="chart"></div>
+        </div>
+        <div class="panel">
+          <div id="caseMix" class="chart short"></div>
+        </div>
+        <div class="panel">
+          <div id="driverMix" class="chart short"></div>
+        </div>
+      </section>
+
+      <div class="section-title">
+        <h2>Business Case Modules</h2>
+        <span>Each section can become a Streamlit tab or page</span>
+      </div>
+
+      <section class="grid-3">
+        <div class="panel">
+          <div id="networkModule" class="chart"></div>
+        </div>
+        <div class="panel">
+          <div id="pvModule" class="chart"></div>
+        </div>
+        <div class="panel">
+          <div id="rampModule" class="chart"></div>
+        </div>
+      </section>
+
+      <div class="section-title">
+        <h2>Unified Decision Intelligence</h2>
+        <span>One recommendation table across all business cases</span>
+      </div>
+
+      <section class="rec-grid">
+        <article class="rec-card network">
+          <h3>Network Risk</h3>
+          <p><strong>Situation:</strong> NSW1 spike coincides with price divergence and interconnector stress.</p>
+          <p><strong>Recommendation:</strong> Monitor VIC1-NSW1 flow and spread during peak conditions.</p>
+          <span class="badge">Network module</span>
+        </article>
+        <article class="rec-card pv">
+          <h3>Rooftop PV Risk</h3>
+          <p><strong>Situation:</strong> Midday net demand is suppressed and price softness is recurring.</p>
+          <p><strong>Recommendation:</strong> Track negative price exposure and solar shape volatility.</p>
+          <span class="badge">PV module</span>
+        </article>
+        <article class="rec-card risk">
+          <h3>Ramp Risk</h3>
+          <p><strong>Situation:</strong> Evening net demand ramp is rising after the solar decline window.</p>
+          <p><strong>Recommendation:</strong> Monitor fast-start availability and high ramp intervals.</p>
+          <span class="badge">Ramp module</span>
+        </article>
+      </section>
+
+      <section class="panel" style="margin-top: 20px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Business Case</th>
+              <th>Region</th>
+              <th>Event</th>
+              <th>Insight</th>
+              <th>Recommendation</th>
+              <th>Confidence</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Network & Divergence</td>
+              <td>NSW1</td>
+              <td>Price spike</td>
+              <td>Spike occurred with broad interconnector congestion-style signals.</td>
+              <td>Review flow changes and NSW1-VIC1 spread around event interval.</td>
+              <td>High</td>
+            </tr>
+            <tr>
+              <td>Rooftop PV Impact</td>
+              <td>VIC1</td>
+              <td>Low price</td>
+              <td>High rooftop PV coincided with lower operational demand.</td>
+              <td>Monitor midday negative price exposure.</td>
+              <td>Medium</td>
+            </tr>
+            <tr>
+              <td>Demand Ramp Risk</td>
+              <td>NSW1</td>
+              <td>Ramp event</td>
+              <td>Net demand increased sharply after solar output declined.</td>
+              <td>Watch evening ramp and available generation margin.</td>
+              <td>Medium</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const dates = Array.from({ length: 96 }, (_, i) => {
+      const d = new Date("2026-02-18T00:00:00");
+      d.setMinutes(d.getMinutes() + i * 15);
+      return d;
+    });
+
+    const nsw = dates.map((_, i) => {
+      const base = 65 + 22 * Math.sin(i / 8) + 8 * Math.cos(i / 4);
+      if (i === 72) return 20300;
+      if (i > 66 && i < 78) return base + 350 + (i % 4) * 60;
+      return Math.max(-35, base);
+    });
+
+    const vic = dates.map((_, i) => {
+      const base = 44 + 15 * Math.sin(i / 9) + 4 * Math.cos(i / 5);
+      return Math.max(-45, base + (i > 66 && i < 78 ? 20 : 0));
+    });
+
+    const rooftop = dates.map((_, i) => Math.max(0, 4200 * Math.sin((Math.PI * i) / 96)));
+    const netDemand = dates.map((_, i) => 7800 + 850 * Math.sin(i / 10) - rooftop[i] * 0.55 + (i > 68 ? (i - 68) * 45 : 0));
+    const spread = nsw.map((v, i) => v - vic[i]);
+    const congestion = dates.map((_, i) => i > 66 && i < 78 ? 3 + (i % 2) : Math.round(1 + Math.abs(Math.sin(i / 7)) * 2));
+    const ramp = netDemand.map((v, i) => i === 0 ? 0 : v - netDemand[i - 1]);
+
+    const config = { responsive: true, displayModeBar: false };
+    const layout = {
+      paper_bgcolor: "white",
+      plot_bgcolor: "white",
+      margin: { l: 56, r: 24, t: 52, b: 48 },
+      font: { family: "Inter, sans-serif", color: "#102033" },
+      hovermode: "x unified",
+      xaxis: { gridcolor: "#e6eef7" },
+      yaxis: { gridcolor: "#e6eef7" },
+      legend: { orientation: "h", y: 1.13, x: 1, xanchor: "right" }
+    };
+
+    Plotly.newPlot("marketLens", [
+      { x: dates, y: nsw, type: "scatter", mode: "lines", name: "NSW1 RRP", line: { color: "#2563eb", width: 2.3 } },
+      { x: dates, y: vic, type: "scatter", mode: "lines", name: "VIC1 RRP", line: { color: "#059669", width: 2.3 } },
+      { x: dates, y: netDemand, type: "scatter", mode: "lines", name: "Net demand", yaxis: "y2", line: { color: "#d97706", width: 2 } }
+    ], {
+      ...layout,
+      title: "Shared Market Lens: Price And Net Demand",
+      yaxis: { title: "RRP ($/MWh)", gridcolor: "#e6eef7" },
+      yaxis2: { title: "Net demand (MW)", overlaying: "y", side: "right", showgrid: false }
+    }, config);
+
+    Plotly.newPlot("caseMix", [{
+      labels: ["Network", "Price Drivers", "Rooftop PV", "Ramp Risk"],
+      values: [38, 26, 21, 15],
+      type: "pie",
+      hole: 0.58,
+      marker: { colors: ["#7c3aed", "#2563eb", "#059669", "#d97706"] }
+    }], {
+      ...layout,
+      title: "Recommendation Mix By Business Case",
+      showlegend: true
+    }, config);
+
+    Plotly.newPlot("driverMix", [{
+      x: ["Interconnector", "Constraint", "PV", "Demand", "Volatility"],
+      y: [31, 8, 24, 17, 9],
+      type: "bar",
+      marker: { color: ["#7c3aed", "#dc2626", "#059669", "#d97706", "#2563eb"] },
+      text: [31, 8, 24, 17, 9],
+      textposition: "outside"
+    }], {
+      ...layout,
+      title: "Event Drivers Across Modules",
+      yaxis: { title: "Events", gridcolor: "#e6eef7" },
+      xaxis: { tickangle: -20, gridcolor: "#e6eef7" }
+    }, config);
+
+    Plotly.newPlot("networkModule", [
+      { x: dates, y: spread, type: "scatter", mode: "lines", name: "NSW1-VIC1 spread", fill: "tozeroy", fillcolor: "rgba(124, 58, 237, 0.12)", line: { color: "#7c3aed", width: 2.2 } },
+      { x: dates, y: congestion, type: "bar", name: "Congestion signals", yaxis: "y2", marker: { color: "rgba(220, 38, 38, 0.32)" } }
+    ], {
+      ...layout,
+      title: "Network & Divergence Module",
+      yaxis: { title: "Spread ($/MWh)", gridcolor: "#e6eef7" },
+      yaxis2: { title: "Signal count", overlaying: "y", side: "right", showgrid: false }
+    }, config);
+
+    Plotly.newPlot("pvModule", [
+      { x: dates, y: rooftop, type: "scatter", mode: "lines", name: "Rooftop PV", line: { color: "#059669", width: 2.4 } },
+      { x: dates, y: vic, type: "scatter", mode: "lines", name: "VIC1 RRP", yaxis: "y2", line: { color: "#111827", width: 2 } }
+    ], {
+      ...layout,
+      title: "Rooftop PV Impact Module",
+      yaxis: { title: "Rooftop PV (MW)", gridcolor: "#e6eef7" },
+      yaxis2: { title: "RRP ($/MWh)", overlaying: "y", side: "right", showgrid: false }
+    }, config);
+
+    Plotly.newPlot("rampModule", [
+      { x: dates, y: ramp, type: "scatter", mode: "lines", name: "Net demand ramp", line: { color: "#d97706", width: 2.3 }, fill: "tozeroy", fillcolor: "rgba(217, 119, 6, 0.14)" }
+    ], {
+      ...layout,
+      title: "Demand Ramp Risk Module",
+      yaxis: { title: "MW change per interval", gridcolor: "#e6eef7" }
+    }, config);
+  </script>
+</body>
+</html>

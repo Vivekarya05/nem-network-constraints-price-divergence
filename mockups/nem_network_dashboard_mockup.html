@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NEM Network Intelligence Dashboard Mockup</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --ink: #14213d;
+      --muted: #64748b;
+      --line: #dbe3ef;
+      --blue: #2563eb;
+      --green: #059669;
+      --amber: #d97706;
+      --red: #dc2626;
+      --violet: #7c3aed;
+      --shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    header {
+      background: #08111f;
+      color: white;
+      padding: 28px 34px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 30px;
+      letter-spacing: 0;
+    }
+
+    header p {
+      margin: 8px 0 0;
+      color: #bfd0e6;
+      max-width: 980px;
+      line-height: 1.5;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 22px;
+      padding: 24px;
+      max-width: 1720px;
+      margin: 0 auto;
+    }
+
+    aside {
+      position: sticky;
+      top: 20px;
+      align-self: start;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    aside h2 {
+      margin: 0 0 16px;
+      font-size: 18px;
+    }
+
+    label {
+      display: block;
+      margin: 14px 0 6px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    select,
+    input {
+      width: 100%;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 0 10px;
+      background: white;
+      color: var(--ink);
+      font-size: 14px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #334155;
+      background: #f8fafc;
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 0 0 14px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .section-title span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(150px, 1fr));
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .kpi {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .kpi .label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .kpi .value {
+      margin-top: 8px;
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .kpi .note {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .wide {
+      grid-column: 1 / -1;
+    }
+
+    .chart {
+      height: 410px;
+    }
+
+    .chart.short {
+      height: 330px;
+    }
+
+    .recommendations {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .rec-card {
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--blue);
+      border-radius: 8px;
+      background: white;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .rec-card.constraint {
+      border-left-color: var(--red);
+    }
+
+    .rec-card.interconnector {
+      border-left-color: var(--violet);
+    }
+
+    .rec-card.demand {
+      border-left-color: var(--amber);
+    }
+
+    .rec-card h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    .rec-card p {
+      color: var(--muted);
+      line-height: 1.45;
+      margin: 8px 0;
+      font-size: 14px;
+    }
+
+    .confidence {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: #ecfdf5;
+      color: #047857;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th,
+    td {
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+      padding: 10px 8px;
+      vertical-align: top;
+    }
+
+    th {
+      color: #334155;
+      background: #f8fafc;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    footer {
+      color: var(--muted);
+      font-size: 12px;
+      padding: 18px 24px 30px;
+      max-width: 1720px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 1100px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      aside {
+        position: static;
+      }
+
+      .kpi-grid,
+      .grid-2,
+      .recommendations {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>NEM Network & Price Divergence Intelligence Dashboard</h1>
+    <p>Sample capstone mockup showing the full flow from market data and network features to spike classification and decision intelligence. This page uses dummy data to preview the final dashboard experience.</p>
+  </header>
+
+  <div class="layout">
+    <aside>
+      <h2>Dashboard Controls</h2>
+      <label>Date Range</label>
+      <input type="text" value="2026-02-01 to 2026-03-01" readonly />
+
+      <label>Region</label>
+      <select>
+        <option>NSW1 and VIC1</option>
+        <option>NSW1</option>
+        <option>VIC1</option>
+      </select>
+
+      <label>Interconnector</label>
+      <select>
+        <option>VIC1-NSW1</option>
+        <option>NSW1-QLD1</option>
+        <option>V-SA</option>
+        <option>N-Q-MNSP1</option>
+      </select>
+
+      <label>Spike Driver</label>
+      <select>
+        <option>All classifications</option>
+        <option>Constraint-driven</option>
+        <option>Interconnector/congestion-driven</option>
+        <option>Demand-driven</option>
+        <option>Volatility-driven</option>
+      </select>
+
+      <label>Signal Filters</label>
+      <div class="pill-row">
+        <span class="pill">Spike</span>
+        <span class="pill">Divergence</span>
+        <span class="pill">Congestion</span>
+        <span class="pill">High confidence</span>
+      </div>
+    </aside>
+
+    <main>
+      <div class="section-title">
+        <h2>Market Overview</h2>
+        <span>Dummy data preview for capstone dashboard design</span>
+      </div>
+
+      <section class="kpi-grid">
+        <div class="kpi">
+          <div class="label">Max NSW1 RRP</div>
+          <div class="value">$20,300</div>
+          <div class="note">Highest dispatch interval</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Spike Intervals</div>
+          <div class="value">53</div>
+          <div class="note">RRP greater than $300/MWh</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Divergence Events</div>
+          <div class="value">148</div>
+          <div class="note">Spread greater than $100/MWh</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Congestion Signals</div>
+          <div class="value">19.8%</div>
+          <div class="note">VIC1-NSW1 signal share</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Top Driver</div>
+          <div class="value">Network</div>
+          <div class="note">Interconnector / congestion</div>
+        </div>
+      </section>
+
+      <section class="grid-2">
+        <div class="panel wide">
+          <div id="rrpChart" class="chart"></div>
+        </div>
+        <div class="panel">
+          <div id="spreadChart" class="chart short"></div>
+        </div>
+        <div class="panel">
+          <div id="classificationChart" class="chart short"></div>
+        </div>
+      </section>
+
+      <div class="section-title">
+        <h2>Network Layer</h2>
+        <span>Constraints and interconnector stress signals</span>
+      </div>
+
+      <section class="grid-2">
+        <div class="panel">
+          <div id="constraintChart" class="chart"></div>
+        </div>
+        <div class="panel">
+          <div id="flowChart" class="chart"></div>
+        </div>
+        <div class="panel wide">
+          <div id="congestionChart" class="chart short"></div>
+        </div>
+      </section>
+
+      <div class="section-title">
+        <h2>Decision Intelligence</h2>
+        <span>Recommendation layer generated from spike classifications</span>
+      </div>
+
+      <section class="recommendations">
+        <article class="rec-card interconnector">
+          <h3>Interconnector / Congestion Driven</h3>
+          <p><strong>Situation:</strong> NSW1 spike occurred during broader congestion-style interconnector signals.</p>
+          <p><strong>Recommendation:</strong> Monitor interconnector flow, price spread, and flow-change behaviour around spike intervals.</p>
+          <p><strong>Risk:</strong> Regional prices may separate sharply when transfer conditions cannot respond.</p>
+          <span class="confidence">High confidence</span>
+        </article>
+
+        <article class="rec-card constraint">
+          <h3>Constraint Watch</h3>
+          <p><strong>Situation:</strong> Active constraint count rose during some high-price intervals.</p>
+          <p><strong>Recommendation:</strong> Review high-impact constraints and test recurrence during peak demand periods.</p>
+          <p><strong>Risk:</strong> Constraint-related dispatch outcomes can repeat if network limitations remain active.</p>
+          <span class="confidence">Medium confidence</span>
+        </article>
+
+        <article class="rec-card demand">
+          <h3>Demand Tightness</h3>
+          <p><strong>Situation:</strong> Some spike periods coincided with tighter supply-demand gap conditions.</p>
+          <p><strong>Recommendation:</strong> Watch demand forecasts, available generation, and evening peak exposure.</p>
+          <p><strong>Risk:</strong> Tight regional conditions increase exposure to scarcity pricing.</p>
+          <span class="confidence">Medium confidence</span>
+        </article>
+      </section>
+
+      <section class="panel" style="margin-top: 22px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Interval</th>
+              <th>Region</th>
+              <th>RRP</th>
+              <th>Classification</th>
+              <th>Insight</th>
+              <th>Recommendation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2026-02-18 18:05</td>
+              <td>NSW1</td>
+              <td>$20,300</td>
+              <td>Interconnector/congestion-driven</td>
+              <td>High price separation and broader congestion-style signals present.</td>
+              <td>Review NSW import conditions and interconnector flow changes.</td>
+            </tr>
+            <tr>
+              <td>2026-02-18 18:10</td>
+              <td>NSW1</td>
+              <td>$9,840</td>
+              <td>Volatility-driven</td>
+              <td>Large interval price movement and elevated rolling volatility.</td>
+              <td>Monitor adjacent intervals for sustained instability.</td>
+            </tr>
+            <tr>
+              <td>2026-02-21 17:35</td>
+              <td>NSW1</td>
+              <td>$1,460</td>
+              <td>Demand-driven</td>
+              <td>Demand was high and supply-demand gap was tighter than normal.</td>
+              <td>Review demand forecast error and available generation levels.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    Mockup only. Final implementation will connect these visuals to PostgreSQL and the Python analytical pipeline.
+  </footer>
+
+  <script>
+    const dates = Array.from({ length: 72 }, (_, i) => {
+      const d = new Date("2026-02-18T00:00:00");
+      d.setMinutes(d.getMinutes() + i * 20);
+      return d;
+    });
+
+    const nsw = dates.map((_, i) => {
+      const base = 62 + 18 * Math.sin(i / 5) + 9 * Math.cos(i / 3);
+      if (i === 52) return 20300;
+      if (i === 53) return 9840;
+      if (i > 45 && i < 58) return base + 260 + (i % 4) * 80;
+      return Math.max(-40, base);
+    });
+
+    const vic = dates.map((_, i) => {
+      const base = 48 + 14 * Math.sin(i / 6) + 5 * Math.cos(i / 4);
+      if (i > 45 && i < 58) return base + 22;
+      return Math.max(-35, base);
+    });
+
+    const spread = nsw.map((v, i) => v - vic[i]);
+    const constraints = dates.map((_, i) => 16 + Math.round(7 * Math.abs(Math.sin(i / 8))) + (i > 45 && i < 58 ? 5 : 0));
+    const flow = dates.map((_, i) => 420 * Math.sin(i / 8) + (i > 45 && i < 58 ? -280 : 90));
+    const congestion = dates.map((_, i) => {
+      if (i > 45 && i < 58) return 3 + (i % 2);
+      return Math.round(1 + 2 * Math.abs(Math.sin(i / 9)));
+    });
+
+    const plotConfig = { responsive: true, displayModeBar: false };
+    const layoutBase = {
+      paper_bgcolor: "white",
+      plot_bgcolor: "white",
+      margin: { l: 56, r: 28, t: 54, b: 48 },
+      font: { family: "Inter, sans-serif", color: "#14213d" },
+      hovermode: "x unified",
+      xaxis: { gridcolor: "#e5edf7" },
+      yaxis: { gridcolor: "#e5edf7" },
+      legend: { orientation: "h", y: 1.12, x: 1, xanchor: "right" }
+    };
+
+    Plotly.newPlot("rrpChart", [
+      { x: dates, y: nsw, type: "scatter", mode: "lines", name: "NSW1 RRP", line: { color: "#2563eb", width: 2.5 } },
+      { x: dates, y: vic, type: "scatter", mode: "lines", name: "VIC1 RRP", line: { color: "#059669", width: 2.5 } },
+      {
+        x: dates.filter((_, i) => nsw[i] > 300),
+        y: nsw.filter(v => v > 300),
+        type: "scatter",
+        mode: "markers",
+        name: "Spike > $300/MWh",
+        marker: { color: "#dc2626", size: 9, symbol: "x" }
+      }
+    ], {
+      ...layoutBase,
+      title: "Regional RRP With Spike Markers",
+      yaxis: { title: "RRP ($/MWh)", gridcolor: "#e5edf7" }
+    }, plotConfig);
+
+    Plotly.newPlot("spreadChart", [
+      {
+        x: dates,
+        y: spread,
+        type: "scatter",
+        mode: "lines",
+        name: "NSW1 - VIC1",
+        fill: "tozeroy",
+        fillcolor: "rgba(37, 99, 235, 0.15)",
+        line: { color: "#2563eb", width: 2 }
+      }
+    ], {
+      ...layoutBase,
+      title: "NSW1-VIC1 Price Spread",
+      shapes: [
+        { type: "line", x0: dates[0], x1: dates[dates.length - 1], y0: 100, y1: 100, line: { color: "#d97706", dash: "dash" } },
+        { type: "line", x0: dates[0], x1: dates[dates.length - 1], y0: 300, y1: 300, line: { color: "#dc2626", dash: "dot" } }
+      ],
+      yaxis: { title: "$/MWh", gridcolor: "#e5edf7" }
+    }, plotConfig);
+
+    Plotly.newPlot("classificationChart", [
+      {
+        x: ["Interconnector", "Constraint", "Demand", "Volatility", "Unknown"],
+        y: [31, 8, 7, 5, 2],
+        type: "bar",
+        marker: { color: ["#7c3aed", "#dc2626", "#d97706", "#2563eb", "#64748b"] },
+        text: [31, 8, 7, 5, 2],
+        textposition: "outside"
+      }
+    ], {
+      ...layoutBase,
+      title: "Spike Classification Summary",
+      yaxis: { title: "Events", gridcolor: "#e5edf7" },
+      xaxis: { tickangle: -20, gridcolor: "#e5edf7" }
+    }, plotConfig);
+
+    Plotly.newPlot("constraintChart", [
+      { x: dates, y: nsw, type: "scatter", mode: "lines", name: "NSW1 RRP", yaxis: "y1", line: { color: "#111827", width: 2 } },
+      { x: dates, y: constraints, type: "bar", name: "Active constraints", yaxis: "y2", marker: { color: "rgba(220, 38, 38, 0.35)" } }
+    ], {
+      ...layoutBase,
+      title: "Constraint Activity Vs NSW1 RRP",
+      yaxis: { title: "RRP ($/MWh)", gridcolor: "#e5edf7" },
+      yaxis2: { title: "Active constraints", overlaying: "y", side: "right", showgrid: false }
+    }, plotConfig);
+
+    Plotly.newPlot("flowChart", [
+      { x: dates, y: flow, type: "scatter", mode: "lines", name: "VIC1-NSW1 flow", line: { color: "#059669", width: 2.5 } },
+      {
+        x: dates.filter((_, i) => Math.abs(flow[i]) > 500),
+        y: flow.filter(v => Math.abs(v) > 500),
+        type: "scatter",
+        mode: "markers",
+        name: "High flow signal",
+        marker: { color: "#dc2626", size: 8, symbol: "diamond" }
+      }
+    ], {
+      ...layoutBase,
+      title: "VIC1-NSW1 Interconnector Flow",
+      yaxis: { title: "MW", gridcolor: "#e5edf7" },
+      shapes: [{ type: "line", x0: dates[0], x1: dates[dates.length - 1], y0: 0, y1: 0, line: { color: "#64748b", dash: "dash" } }]
+    }, plotConfig);
+
+    Plotly.newPlot("congestionChart", [
+      {
+        x: dates,
+        y: congestion,
+        type: "scatter",
+        mode: "lines",
+        name: "Signal count",
+        fill: "tozeroy",
+        fillcolor: "rgba(124, 58, 237, 0.16)",
+        line: { color: "#7c3aed", width: 2.5 }
+      }
+    ], {
+      ...layoutBase,
+      title: "Interconnector Congestion-Style Signal Count",
+      yaxis: { title: "Signal count", dtick: 1, gridcolor: "#e5edf7" }
+    }, plotConfig);
+  </script>
+</body>
+</html>

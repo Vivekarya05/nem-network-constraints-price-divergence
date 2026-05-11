@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>NEM Network Constraints &amp; Price Divergence Intelligence System - Final Analyst Report</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">NEM Network Constraints &amp; Price Divergence
+Intelligence System - Final Analyst Report</h1>
+</header>
+<h1 id="final-analyst-report">Final Analyst Report</h1>
+<h1
+id="nem-network-constraints-price-divergence-intelligence-system">NEM
+Network Constraints &amp; Price Divergence Intelligence System</h1>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>This project analysed how network constraints and interconnector
+flows influenced regional price behaviour in the Australian National
+Electricity Market for the February 2026 study period.</p>
+<p>The analysis focused on NSW1 and VIC1 and examined dispatch price,
+regional demand and generation conditions, dispatch constraint activity,
+interconnector flows, NSW1-VIC1 price divergence, price spike
+classification, and decision intelligence recommendations.</p>
+<p>The key finding is that NSW1 recorded material price spike events
+while VIC1 did not breach the selected $300/MWh spike threshold. NSW1
+spike intervals were associated with elevated constraint activity and
+broader interconnector congestion-style signals. However, constraint
+marginal value and violation evidence did not support a simple
+conclusion that all spikes were purely constraint-driven.</p>
+<p>The most severe price outcomes were classified as
+interconnector/congestion-driven, with regional price divergence and
+broader interconnector stress providing important explanatory
+evidence.</p>
+<h2 id="business-question">Business Question</h2>
+<p>How do network constraints and interconnector flows drive price
+spikes, congestion, and regional price divergence in the NEM?</p>
+<h2 id="study-scope">Study Scope</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Item</th>
+<th>Scope</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Market</td>
+<td>Australian National Electricity Market</td>
+</tr>
+<tr>
+<td>Study period</td>
+<td>2026-02-01 to 2026-03-01</td>
+</tr>
+<tr>
+<td>Focus regions</td>
+<td>NSW1 and VIC1</td>
+</tr>
+<tr>
+<td>Primary network focus</td>
+<td>Dispatch constraints and interconnector flows</td>
+</tr>
+<tr>
+<td>Main price threshold</td>
+<td>RRP greater than $300/MWh</td>
+</tr>
+<tr>
+<td>Divergence threshold</td>
+<td>NSW1-VIC1 absolute price spread greater than $100/MWh</td>
+</tr>
+<tr>
+<td>Extreme divergence threshold</td>
+<td>NSW1-VIC1 absolute price spread greater than $300/MWh</td>
+</tr>
+</tbody>
+</table>
+<h2 id="data-sources">Data Sources</h2>
+<p>The analysis used AEMO NEMWeb data loaded into PostgreSQL through an
+existing ETL pipeline.</p>
+<p>Core tables used:</p>
+<ul>
+<li><code>raw.dispatch_price</code></li>
+<li><code>raw.dispatch_regionsum</code></li>
+<li><code>raw.dispatch_constraints</code></li>
+<li><code>raw.interconnector_results</code></li>
+</ul>
+<p>Optional tables available for future enhancement:</p>
+<ul>
+<li><code>raw.constraint_rhs</code></li>
+<li><code>raw.constraint_details</code></li>
+<li><code>raw.constraint_equations</code></li>
+</ul>
+<p>NEMOSIS was not used.</p>
+<h2 id="analytical-methodology">Analytical Methodology</h2>
+<p>The project was developed through eight notebooks:</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Notebook</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01 Data Extraction And Market Context</td>
+<td>Extracted and merged price, demand, generation, and interchange
+data.</td>
+</tr>
+<tr>
+<td>02 Base Market Feature Engineering</td>
+<td>Created price spikes, supply-demand gap, price change, volatility,
+and time features.</td>
+</tr>
+<tr>
+<td>03 Constraint Activity Analysis</td>
+<td>Created interval-level constraint activity features.</td>
+</tr>
+<tr>
+<td>04 Interconnector Flow Analysis</td>
+<td>Created interconnector flow, flow change, and congestion-style
+signal features.</td>
+</tr>
+<tr>
+<td>05 Regional Price Divergence</td>
+<td>Calculated NSW1-VIC1 price spread and divergence flags.</td>
+</tr>
+<tr>
+<td>06 Network Spike Classification</td>
+<td>Classified price spikes by likely market driver.</td>
+</tr>
+<tr>
+<td>07 Decision Intelligence</td>
+<td>Converted spike classifications into recommendations, risks, and
+confidence levels.</td>
+</tr>
+<tr>
+<td>08 Plotly Visualisation Pack</td>
+<td>Created interactive visual outputs for reporting and dashboard
+design.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="base-market-findings">Base Market Findings</h2>
+<p>The base market dataset combined regional RRP, total demand,
+available generation, and net interchange at 5-minute dispatch interval
+resolution.</p>
+<p>Using a $300/MWh spike threshold:</p>
+<ul>
+<li>NSW1 recorded 53 spike intervals.</li>
+<li>VIC1 recorded no spike intervals under the selected threshold.</li>
+</ul>
+<p>This indicates that NSW1 was the main high-price event region during
+the study period, while VIC1 remained important as the comparison region
+for price divergence and interconnector analysis.</p>
+<h2 id="constraint-driven-behaviour">Constraint-Driven Behaviour</h2>
+<p>Constraint activity was assessed using:</p>
+<ul>
+<li>active constraint count</li>
+<li>maximum constraint marginal value</li>
+<li>total constraint marginal value</li>
+<li>violation flag</li>
+<li>maximum violation degree</li>
+</ul>
+<p>During NSW1 non-spike intervals:</p>
+<ul>
+<li>average RRP was approximately $68/MWh</li>
+<li>average active constraint count was approximately 19.3</li>
+</ul>
+<p>During NSW1 spike intervals:</p>
+<ul>
+<li>average RRP was approximately $2,417/MWh</li>
+<li>average active constraint count increased to approximately 24.4</li>
+<li>no violation intervals were observed during NSW1 spike periods</li>
+</ul>
+<p>This indicates that NSW1 spike intervals occurred during periods with
+higher average constraint activity.</p>
+<p>However, maximum constraint marginal value was not concentrated in
+spike intervals. The largest marginal value events occurred during
+non-spike intervals. This means the evidence does not support a simple
+conclusion that NSW1 price spikes were purely constraint-driven.</p>
+<h2 id="interconnector-insights">Interconnector Insights</h2>
+<p>The interconnector analysis created the following features:</p>
+<ul>
+<li>flow</li>
+<li>absolute flow</li>
+<li>flow change</li>
+<li>absolute flow change</li>
+<li>high flow flag</li>
+<li>high flow change flag</li>
+<li>congestion-style signal flag</li>
+</ul>
+<p>The <code>VIC1-NSW1</code> interconnector was particularly important
+because it directly connects the focus regions.</p>
+<p>For <code>VIC1-NSW1</code>:</p>
+<ul>
+<li>maximum absolute flow was approximately 1,873 MW</li>
+<li>maximum absolute flow change was approximately 1,447 MW</li>
+<li>congestion-style signal share was approximately 19.8%</li>
+</ul>
+<p>During NSW1 spike intervals:</p>
+<ul>
+<li>average maximum absolute interconnector flow increased</li>
+<li>average maximum absolute flow change increased</li>
+<li>average congestion signal count increased</li>
+<li>49 of 53 NSW1 spike intervals had at least one broader
+congestion-style signal</li>
+</ul>
+<p>This suggests that broader interconnector stress was relevant during
+most NSW1 spike intervals.</p>
+<p>However, direct <code>VIC1-NSW1</code> absolute flow was lower during
+NSW1 spike intervals than during non-spike intervals. This means the
+spike explanation is broader than a single direct interconnector flow
+signal.</p>
+<h2 id="regional-price-divergence">Regional Price Divergence</h2>
+<p>NSW1-VIC1 price divergence was measured using:</p>
+<ul>
+<li>NSW1 RRP</li>
+<li>VIC1 RRP</li>
+<li>signed price spread</li>
+<li>absolute price spread</li>
+<li>divergence flag above $100/MWh</li>
+<li>extreme divergence flag above $300/MWh</li>
+</ul>
+<p>Key divergence results:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th style="text-align: right;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Intervals analysed</td>
+<td style="text-align: right;">8063</td>
+</tr>
+<tr>
+<td>Average NSW1 RRP</td>
+<td style="text-align: right;">83.76</td>
+</tr>
+<tr>
+<td>Average VIC1 RRP</td>
+<td style="text-align: right;">45.06</td>
+</tr>
+<tr>
+<td>Average price spread</td>
+<td style="text-align: right;">38.71</td>
+</tr>
+<tr>
+<td>Average absolute price spread</td>
+<td style="text-align: right;">44.93</td>
+</tr>
+<tr>
+<td>Maximum positive spread</td>
+<td style="text-align: right;">20308.00</td>
+</tr>
+<tr>
+<td>Maximum negative spread</td>
+<td style="text-align: right;">-234.02</td>
+</tr>
+<tr>
+<td>Divergence intervals</td>
+<td style="text-align: right;">307</td>
+</tr>
+<tr>
+<td>Extreme divergence intervals</td>
+<td style="text-align: right;">60</td>
+</tr>
+<tr>
+<td>Divergence share</td>
+<td style="text-align: right;">3.81%</td>
+</tr>
+<tr>
+<td>Extreme divergence share</td>
+<td style="text-align: right;">0.74%</td>
+</tr>
+</tbody>
+</table>
+<p>The divergence analysis shows that NSW1 prices were higher than VIC1
+on average, and that material price separation occurred in concentrated
+intervals.</p>
+<p>This supports the conclusion that regional separation was an
+important part of the market story, particularly during high-price
+periods.</p>
+<h2 id="spike-classification">Spike Classification</h2>
+<p>Price spikes were classified using a rule-based framework.</p>
+<p>Classification categories:</p>
+<ul>
+<li>Constraint-driven</li>
+<li>Interconnector/congestion-driven</li>
+<li>Demand-driven</li>
+<li>Volatility-driven</li>
+<li>Unknown</li>
+</ul>
+<p>Classification logic used:</p>
+<ul>
+<li>demand tightness signal</li>
+<li>volatility signal</li>
+<li>constraint signal</li>
+<li>interconnector congestion signal</li>
+<li>divergence signal</li>
+</ul>
+<p>Key classification result:</p>
+<table>
+<thead>
+<tr>
+<th>Region</th>
+<th>Classification</th>
+<th style="text-align: right;">Spike Intervals</th>
+<th style="text-align: right;">Average RRP</th>
+<th style="text-align: right;">Max RRP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NSW1</td>
+<td>Constraint-driven</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">1522.01</td>
+<td style="text-align: right;">9914.02</td>
+</tr>
+<tr>
+<td>NSW1</td>
+<td>Interconnector/congestion-driven</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">3346.61</td>
+<td style="text-align: right;">20300.00</td>
+</tr>
+</tbody>
+</table>
+<p>NSW1 spike intervals were split almost evenly between
+constraint-driven and interconnector/congestion-driven
+classifications.</p>
+<p>The interconnector/congestion-driven group had the higher average RRP
+and included the maximum price event of $20,300/MWh.</p>
+<p>This suggests that the most severe price outcomes were more strongly
+associated with interconnector stress and regional price divergence than
+with constraint signals alone.</p>
+<h2 id="decision-intelligence-recommendations">Decision Intelligence
+Recommendations</h2>
+<p>The decision intelligence layer translated spike classifications
+into:</p>
+<ul>
+<li>market situation</li>
+<li>insight</li>
+<li>recommendation</li>
+<li>risk</li>
+<li>confidence</li>
+</ul>
+<p>For constraint-driven spike intervals, the recommendation is to
+review binding or high-impact constraints and monitor whether similar
+constraints recur during peak demand or outage conditions.</p>
+<p>For interconnector/congestion-driven intervals, the recommendation is
+to monitor interconnector flow, flow changes, and regional price
+spreads, with particular focus on NSW1-VIC1 separation and neighbouring
+interconnector behaviour.</p>
+<p>The decision recommendations are not trading instructions. They are
+decision-support outputs that help analysts prioritise which intervals,
+constraints, interconnectors, and price divergence events require deeper
+review.</p>
+<h2 id="visual-outputs">Visual Outputs</h2>
+<p>The project created the following interactive Plotly charts:</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Chart</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RRP by region with spike markers</td>
+<td>Shows price outcomes and spike timing.</td>
+</tr>
+<tr>
+<td>NSW1 vs VIC1 RRP comparison</td>
+<td>Shows regional price alignment and separation.</td>
+</tr>
+<tr>
+<td>NSW1-VIC1 price spread</td>
+<td>Shows material and extreme divergence.</td>
+</tr>
+<tr>
+<td>Constraint activity vs NSW1 RRP</td>
+<td>Compares constraints with price outcomes.</td>
+</tr>
+<tr>
+<td>VIC1-NSW1 interconnector flow</td>
+<td>Shows direct NSW-VIC transfer behaviour.</td>
+</tr>
+<tr>
+<td>Congestion signal count</td>
+<td>Shows broader interconnector stress.</td>
+</tr>
+<tr>
+<td>Spike classification summary</td>
+<td>Shows likely spike drivers.</td>
+</tr>
+<tr>
+<td>Demand and price overview</td>
+<td>Compares demand and price between NSW1 and VIC1.</td>
+</tr>
+</tbody>
+</table>
+<p>These charts support both analyst review and future dashboard
+design.</p>
+<h2 id="key-findings">Key Findings</h2>
+<ol type="1">
+<li><p>NSW1 was the main high-price event region, with 53 intervals
+above $300/MWh.</p></li>
+<li><p>VIC1 did not breach the selected price spike threshold during the
+study period.</p></li>
+<li><p>NSW1 price spikes were associated with higher average active
+constraint counts.</p></li>
+<li><p>Constraint marginal value and violation evidence did not support
+a simple conclusion that all NSW1 spikes were purely
+constraint-driven.</p></li>
+<li><p>Broader interconnector congestion-style signals were present
+during most NSW1 spike intervals.</p></li>
+<li><p>NSW1-VIC1 price divergence was material in concentrated
+intervals, with 307 divergence intervals and 60 extreme divergence
+intervals.</p></li>
+<li><p>Spike classification split NSW1 spike intervals between
+constraint-driven and interconnector/congestion-driven
+categories.</p></li>
+<li><p>The most severe price outcomes were in the
+interconnector/congestion-driven classification group.</p></li>
+</ol>
+<h2 id="risks">Risks</h2>
+<p>Key market risks identified:</p>
+<ul>
+<li>regional price separation risk</li>
+<li>constraint recurrence risk</li>
+<li>interconnector flow stress risk</li>
+<li>high-price volatility risk</li>
+<li>classification uncertainty where multiple drivers overlap</li>
+</ul>
+<h2 id="limitations">Limitations</h2>
+<p>This project has several limitations:</p>
+<ul>
+<li>It focuses on NSW1 and VIC1 only.</li>
+<li>Congestion-style signals are analytical indicators, not formal AEMO
+congestion classifications.</li>
+<li>Constraint RHS and equation data were not deeply interpreted.</li>
+<li>The spike classification is rule-based, not causal.</li>
+<li>Bidding behaviour and unit-level dispatch were not included.</li>
+<li>FCAS and BESS revenue logic are future enhancements.</li>
+</ul>
+<p>These limitations should be clearly stated in portfolio and interview
+discussion.</p>
+<h2 id="next-steps">Next Steps</h2>
+<p>Recommended future enhancements:</p>
+<ol type="1">
+<li>Extend the analysis to all NEM regions.</li>
+<li>Allow dynamic region pair selection.</li>
+<li>Add formal interconnector limit and constraint equation
+analysis.</li>
+<li>Use constraint RHS and equation data to explain binding
+constraints.</li>
+<li>Add FCAS price and requirement analysis.</li>
+<li>Add BESS charge/discharge and revenue simulation.</li>
+<li>Convert notebook logic into reusable Python model code.</li>
+<li>Build a Streamlit dashboard.</li>
+<li>Create a unified trader decision signal layer.</li>
+<li>Schedule ETL and analytics refresh.</li>
+</ol>
+<h2 id="final-conclusion">Final Conclusion</h2>
+<p>This project demonstrates a complete energy market analyst workflow:
+extracting dispatch data, engineering market and network features,
+identifying price spikes and regional divergence, classifying likely
+drivers, and translating results into decision intelligence.</p>
+<p>The analysis shows that NSW1 high-price events during February 2026
+were not explained by demand or constraints alone. Network conditions,
+interconnector stress, and regional price separation were important
+parts of the market story.</p>
+<p>The project is suitable for a professional Energy Market Analyst or
+Energy Modeller portfolio because it combines technical Python analysis
+with market reasoning, business interpretation, and decision-oriented
+outputs.</p>
+</body>
+</html>
