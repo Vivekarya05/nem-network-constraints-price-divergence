@@ -1,0 +1,1237 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NEM Network Intelligence Dashboard - Professional View</title>
+  <style>
+    :root {
+      --bg: #f3f6fa;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --ink: #111827;
+      --muted: #64748b;
+      --line: #d8e2ef;
+      --nav: #0a1220;
+      --blue: #1d4ed8;
+      --blue-soft: #dbeafe;
+      --green: #047857;
+      --green-soft: #d1fae5;
+      --red: #b91c1c;
+      --red-soft: #fee2e2;
+      --amber: #b45309;
+      --amber-soft: #fef3c7;
+      --purple: #6d28d9;
+      --purple-soft: #ede9fe;
+      --radius: 8px;
+      --shadow: 0 14px 34px rgba(15, 23, 42, 0.075);
+      --shadow-soft: 0 8px 22px rgba(15, 23, 42, 0.055);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(180deg, #f8fafc 0%, var(--bg) 260px),
+        var(--bg);
+      color: var(--ink);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 296px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: var(--nav);
+      color: white;
+      padding: 22px 18px;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .brand {
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      margin-bottom: 18px;
+    }
+
+    .brand-kicker {
+      color: #93c5fd;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand h1 {
+      margin: 10px 0 8px;
+      font-size: 24px;
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .brand p {
+      margin: 0;
+      color: #b8c7da;
+      font-size: 13px;
+    }
+
+    .author {
+      display: inline-flex;
+      margin-top: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+      padding: 7px 10px;
+      color: #e5eefb;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .nav-label {
+      color: #8da2bd;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 18px 0 8px;
+    }
+
+    .nav-button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.055);
+      color: #d7e4f5;
+      border-radius: 6px;
+      padding: 12px;
+      cursor: pointer;
+      margin-bottom: 8px;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .nav-button.active {
+      background: linear-gradient(90deg, #1d4ed8, #1e40af);
+      border-color: #60a5fa;
+      color: white;
+    }
+
+    .nav-button span:last-child {
+      color: #9db3cc;
+      font-size: 11px;
+    }
+
+    .active span:last-child {
+      color: #dbeafe;
+    }
+
+    .nav-hint {
+      margin-top: 12px;
+      color: #91a5bf;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .filter-box {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.055);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    label {
+      display: block;
+      color: #adc0d6;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin: 12px 0 6px;
+    }
+
+    select,
+    input {
+      width: 100%;
+      height: 36px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+      padding: 0 10px;
+      font-size: 13px;
+    }
+
+    select option {
+      color: #111827;
+    }
+
+    .main {
+      min-width: 0;
+    }
+
+    .topbar {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .topbar-inner {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 16px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .topbar h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .topbar p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 6px;
+      padding: 8px 11px;
+      background: var(--green-soft);
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    main {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 26px 28px 40px;
+    }
+
+    .view {
+      display: none;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    .hero-panel {
+      border-radius: var(--radius);
+      background:
+        linear-gradient(120deg, rgba(10, 18, 32, 0.96), rgba(30, 64, 175, 0.92)),
+        #0a1220;
+      color: white;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+      display: grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .hero-panel h2 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 46px);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .hero-panel p {
+      margin: 12px 0 0;
+      color: #dbeafe;
+      max-width: 920px;
+      font-size: 15px;
+    }
+
+    .hero-note {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 6px;
+      padding: 16px;
+    }
+
+    .hero-note h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+
+    .hero-note ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      color: #e5eefb;
+      font-size: 13px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(145px, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .kpi,
+    .chart-card,
+    .story-card,
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .kpi {
+      padding: 16px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .kpi::after {
+      content: "";
+      position: absolute;
+      right: -28px;
+      top: -32px;
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: var(--blue-soft);
+    }
+
+    .kpi.red::after {
+      background: var(--red-soft);
+    }
+
+    .kpi.green::after {
+      background: var(--green-soft);
+    }
+
+    .kpi.purple::after {
+      background: var(--purple-soft);
+    }
+
+    .kpi.amber::after {
+      background: var(--amber-soft);
+    }
+
+    .kpi .label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+    }
+
+    .kpi .value {
+      margin-top: 8px;
+      font-size: 28px;
+      font-weight: 900;
+      position: relative;
+      z-index: 1;
+    }
+
+    .kpi .note {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 18px;
+      margin: 24px 0 14px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .section-title p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      max-width: 780px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .wide {
+      grid-column: 1 / -1;
+    }
+
+    .chart-card {
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .chart-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+
+    .chart-card h3 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .chart-card p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .open-link {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--line);
+      background: var(--surface-2);
+      color: var(--blue);
+      border-radius: 6px;
+      padding: 7px 10px;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    iframe {
+      width: 100%;
+      height: 660px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: white;
+      display: block;
+    }
+
+    iframe.short {
+      height: 540px;
+    }
+
+    .signal-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .signal-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .signal-card h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .signal-card p {
+      color: var(--muted);
+      margin: 6px 0 0;
+      font-size: 14px;
+    }
+
+    .signal-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 170px;
+      border-radius: 6px;
+      background: var(--purple-soft);
+      color: var(--purple);
+      padding: 12px 14px;
+      font-size: 14px;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .workflow-step {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
+    }
+
+    .workflow-step span {
+      display: block;
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .workflow-step strong {
+      display: block;
+      margin-top: 5px;
+      font-size: 13px;
+    }
+
+    .chart-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .meta-pill {
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: #475569;
+      background: var(--surface-2);
+      padding: 5px 8px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .subtabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 16px;
+      padding: 10px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .subtab-button {
+      border: 1px solid var(--line);
+      background: var(--surface-2);
+      color: #334155;
+      border-radius: 999px;
+      padding: 8px 11px;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .subtab-button.active {
+      background: var(--blue);
+      color: white;
+      border-color: var(--blue);
+    }
+
+    .chart-group {
+      display: none;
+    }
+
+    .chart-group.active {
+      display: block;
+    }
+
+    .story-card,
+    .panel {
+      padding: 18px;
+    }
+
+    .story-card {
+      border-top: 5px solid var(--blue);
+    }
+
+    .story-card.red {
+      border-top-color: var(--red);
+    }
+
+    .story-card.green {
+      border-top-color: var(--green);
+    }
+
+    .story-card.purple {
+      border-top-color: var(--purple);
+    }
+
+    .story-card.amber {
+      border-top-color: var(--amber);
+    }
+
+    .story-card h3,
+    .panel h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    .story-card p,
+    .panel p {
+      margin: 8px 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .story-card ul,
+    .panel ul {
+      margin: 10px 0 0;
+      padding-left: 20px;
+      color: #475569;
+      font-size: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      padding: 11px 9px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+    }
+
+    th {
+      background: var(--surface-2);
+      color: #334155;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 6px;
+      padding: 5px 8px;
+      color: white;
+      background: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .tag.red {
+      background: var(--red);
+    }
+
+    .tag.green {
+      background: var(--green);
+    }
+
+    .tag.purple {
+      background: var(--purple);
+    }
+
+    .tag.amber {
+      background: var(--amber);
+    }
+
+    footer {
+      color: var(--muted);
+      font-size: 13px;
+      padding: 16px 28px 34px;
+      max-width: 1500px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 1180px) {
+      .shell {
+        grid-template-columns: 1fr;
+      }
+
+      aside {
+        position: static;
+        height: auto;
+      }
+
+      .hero-panel,
+      .signal-grid,
+      .workflow,
+      .grid-2,
+      .grid-3,
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+
+      iframe {
+        height: 560px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <div class="brand">
+        <div class="brand-kicker">Portfolio Showcase</div>
+        <h1>NEM Network Intelligence</h1>
+        <p>Professional dashboard prototype for network constraints, interconnector flow, price divergence, and decision intelligence.</p>
+        <div class="author">Vivek Bharadwaj - Energy Market Analyst</div>
+      </div>
+
+      <div class="nav-label">Views</div>
+      <button class="nav-button active" data-view="overview"><span>Project Overview</span><span>01</span></button>
+      <button class="nav-button" data-view="charts"><span>Visual Analysis</span><span>02</span></button>
+      <button class="nav-button" data-view="story"><span>Analyst Findings</span><span>03</span></button>
+      <button class="nav-button" data-view="method"><span>Methodology & Outputs</span><span>04</span></button>
+      <div class="nav-hint">
+        Static showcase page built from the real project outputs. Use the chart buttons to open each Plotly view in full screen.
+      </div>
+
+      <div class="filter-box">
+        <div class="nav-label" style="margin-top:0;">Dashboard Filters</div>
+        <label>Study Period</label>
+        <input value="2026-02-01 to 2026-03-01" readonly />
+        <label>Primary Region</label>
+        <select>
+          <option>NSW1</option>
+          <option>VIC1</option>
+        </select>
+        <label>Comparison Region</label>
+        <select>
+          <option>VIC1</option>
+          <option>NSW1</option>
+        </select>
+        <label>Focus Interconnector</label>
+        <select>
+          <option>VIC1-NSW1</option>
+          <option>NSW1-QLD1</option>
+          <option>V-SA</option>
+        </select>
+      </div>
+    </aside>
+
+    <div class="main">
+      <div class="topbar">
+        <div class="topbar-inner">
+          <div>
+            <h2>NEM Network Constraints & Price Divergence Intelligence System</h2>
+            <p>Static GitHub Pages project dashboard using real Plotly outputs from the analysis.</p>
+          </div>
+          <div class="status-pill">Project complete</div>
+        </div>
+      </div>
+
+      <main>
+        <section id="overview" class="view active">
+          <div class="hero-panel">
+            <div>
+              <h2>From raw dispatch data to network-aware market intelligence.</h2>
+              <p>
+                This project analyses how constraints, interconnector flow behaviour, and regional price divergence
+                influence NEM price spikes, then turns those signals into decision-ready recommendations.
+              </p>
+            </div>
+            <div class="hero-note">
+              <h3>Core Stack</h3>
+              <ul>
+                <li>AEMO NEMWeb ETL</li>
+                <li>PostgreSQL raw tables</li>
+                <li>Python and pandas models</li>
+                <li>Plotly visual analytics</li>
+                <li>Decision intelligence outputs</li>
+              </ul>
+            </div>
+          </div>
+
+          <section class="signal-grid">
+            <article class="signal-card">
+              <div>
+                <h3>Primary analytical signal</h3>
+                <p>
+                  NSW1 high-price intervals were not explained by demand or constraints alone.
+                  The most severe outcomes aligned more strongly with network, interconnector, and regional price separation signals.
+                </p>
+              </div>
+              <div class="signal-badge">Network-aware price risk</div>
+            </article>
+
+            <article class="signal-card">
+              <div>
+                <h3>Decision layer</h3>
+                <p>Spike classifications are converted into market situation, insight, recommendation, risk, and confidence fields.</p>
+              </div>
+              <div class="signal-badge">Analyst-ready output</div>
+            </article>
+          </section>
+
+          <section class="kpi-grid">
+            <article class="kpi">
+              <div class="label">Study Period</div>
+              <div class="value">Feb 2026</div>
+              <div class="note">5-minute dispatch intervals</div>
+            </article>
+            <article class="kpi red">
+              <div class="label">NSW1 Spike Intervals</div>
+              <div class="value">53</div>
+              <div class="note">RRP above $300/MWh</div>
+            </article>
+            <article class="kpi purple">
+              <div class="label">Divergence Intervals</div>
+              <div class="value">307</div>
+              <div class="note">Spread above $100/MWh</div>
+            </article>
+            <article class="kpi green">
+              <div class="label">Extreme Divergence</div>
+              <div class="value">60</div>
+              <div class="note">Spread above $300/MWh</div>
+            </article>
+            <article class="kpi amber">
+              <div class="label">Main Insight</div>
+              <div class="value">Network</div>
+              <div class="note">Severe spikes linked to network signals</div>
+            </article>
+          </section>
+
+          <section class="workflow">
+            <div class="workflow-step"><span>Step 01</span><strong>Extract from PostgreSQL</strong></div>
+            <div class="workflow-step"><span>Step 02</span><strong>Engineer market features</strong></div>
+            <div class="workflow-step"><span>Step 03</span><strong>Add network signals</strong></div>
+            <div class="workflow-step"><span>Step 04</span><strong>Classify spike events</strong></div>
+            <div class="workflow-step"><span>Step 05</span><strong>Generate recommendations</strong></div>
+          </section>
+
+          <div class="section-title">
+            <div>
+              <h2>Project Summary</h2>
+              <p>High-level market story without charts. Use Visual Analysis for the interactive graph pack.</p>
+            </div>
+          </div>
+
+          <section class="grid-3">
+            <article class="story-card">
+              <h3>What Was Built</h3>
+              <p>An end-to-end NEM analytics workflow that extracts PostgreSQL data, engineers market and network features, classifies price spikes, and produces decision recommendations.</p>
+            </article>
+            <article class="story-card purple">
+              <h3>What It Explains</h3>
+              <p>The project tests whether high-price events are linked to demand fundamentals, constraint activity, interconnector stress, or NSW1-VIC1 regional price separation.</p>
+            </article>
+            <article class="story-card green">
+              <h3>Why It Matters</h3>
+              <p>It moves the analysis from price detection to market explanation, creating analyst-ready outputs for review, reporting, and dashboarding.</p>
+            </article>
+          </section>
+        </section>
+
+        <section id="charts" class="view">
+          <div class="section-title">
+            <div>
+              <h2>Visual Analysis</h2>
+              <p>All Plotly chart outputs embedded in a professional dashboard layout.</p>
+            </div>
+          </div>
+
+          <div class="subtabs" aria-label="Visual analysis chart categories">
+            <button class="subtab-button active" data-chart-tab="visual-overview">Overview</button>
+            <button class="subtab-button" data-chart-tab="visual-price">Price & Demand</button>
+            <button class="subtab-button" data-chart-tab="visual-network">Network Diagnostics</button>
+            <button class="subtab-button" data-chart-tab="visual-classification">Spike Classification</button>
+          </div>
+
+          <section id="visual-overview" class="chart-group active">
+            <section class="grid-2">
+            <article class="chart-card wide">
+              <div class="chart-head">
+                <div>
+                  <h3>Demand And Price Overview: Interactive</h3>
+                  <p>Two-panel overview of RRP and total demand.</p>
+                  <div class="chart-meta">
+                    <span class="meta-pill">Primary view</span>
+                    <span class="meta-pill">Spike markers</span>
+                  </div>
+                </div>
+                <a class="open-link" href="outputs/charts/08_interactive_demand_price_overview_nsw_vic.html" target="_blank">Open</a>
+              </div>
+              <iframe src="outputs/charts/08_interactive_demand_price_overview_nsw_vic.html" loading="lazy"></iframe>
+            </article>
+
+            <article class="chart-card wide">
+              <div class="chart-head">
+                <div>
+                  <h3>Demand And Price Overview: Dual Axis</h3>
+                  <p>Original regional demand and price comparison.</p>
+                  <div class="chart-meta">
+                    <span class="meta-pill">Dual axis</span>
+                    <span class="meta-pill">Regional comparison</span>
+                  </div>
+                </div>
+                <a class="open-link" href="outputs/charts/08_demand_and_price_overview_nsw_vic.html" target="_blank">Open</a>
+              </div>
+              <iframe src="outputs/charts/08_demand_and_price_overview_nsw_vic.html" loading="lazy"></iframe>
+            </article>
+            </section>
+          </section>
+
+          <section id="visual-price" class="chart-group">
+            <section class="grid-2">
+            <article class="chart-card">
+              <div class="chart-head">
+                <div>
+                  <h3>RRP By Region With Spike Markers</h3>
+                  <p>RRP movement and high-price intervals.</p>
+                  <div class="chart-meta">
+                    <span class="meta-pill">RRP</span>
+                    <span class="meta-pill">Spike threshold</span>
+                  </div>
+                </div>
+                <a class="open-link" href="outputs/charts/01_rrp_by_region_with_spikes.html" target="_blank">Open</a>
+              </div>
+              <iframe class="short" src="outputs/charts/01_rrp_by_region_with_spikes.html" loading="lazy"></iframe>
+            </article>
+
+            <article class="chart-card">
+              <div class="chart-head">
+                <div>
+                  <h3>NSW1 vs VIC1 RRP Comparison</h3>
+                  <p>Regional price alignment and separation.</p>
+                  <div class="chart-meta">
+                    <span class="meta-pill">NSW1</span>
+                    <span class="meta-pill">VIC1</span>
+                  </div>
+                </div>
+                <a class="open-link" href="outputs/charts/02_nsw_vic_rrp_comparison.html" target="_blank">Open</a>
+              </div>
+              <iframe class="short" src="outputs/charts/02_nsw_vic_rrp_comparison.html" loading="lazy"></iframe>
+            </article>
+            <article class="chart-card wide">
+              <div class="chart-head">
+                <div>
+                  <h3>NSW1-VIC1 Price Spread</h3>
+                  <p>Material and extreme price divergence.</p>
+                  <div class="chart-meta">
+                    <span class="meta-pill">Spread</span>
+                    <span class="meta-pill">$100 threshold</span>
+                    <span class="meta-pill">$300 threshold</span>
+                  </div>
+                </div>
+                <a class="open-link" href="outputs/charts/03_nsw_vic_price_spread.html" target="_blank">Open</a>
+              </div>
+              <iframe class="short" src="outputs/charts/03_nsw_vic_price_spread.html" loading="lazy"></iframe>
+            </article>
+            </section>
+          </section>
+
+          <section id="visual-network" class="chart-group">
+            <section class="grid-2">
+            <article class="chart-card">
+              <div class="chart-head">
+                <div>
+                  <h3>Constraint Activity vs NSW1 RRP</h3>
+                  <p>Price stress compared with active constraint count.</p>
+                  <div class="chart-meta">
+                    <span class="meta-pill">Constraints</span>
+                    <span class="meta-pill">RRP overlay</span>
+                  </div>
+                </div>
+                <a class="open-link" href="outputs/charts/04_constraint_activity_vs_nsw_rrp.html" target="_blank">Open</a>
+              </div>
+              <iframe class="short" src="outputs/charts/04_constraint_activity_vs_nsw_rrp.html" loading="lazy"></iframe>
+            </article>
+
+            <article class="chart-card">
+              <div class="chart-head">
+                <div>
+                  <h3>VIC1-NSW1 Interconnector Flow</h3>
+                  <p>Direct NSW-VIC flow and congestion-style signals.</p>
+                  <div class="chart-meta">
+                    <span class="meta-pill">Flow</span>
+                    <span class="meta-pill">Congestion signal</span>
+                  </div>
+                </div>
+                <a class="open-link" href="outputs/charts/05_vic_nsw_interconnector_flow.html" target="_blank">Open</a>
+              </div>
+              <iframe class="short" src="outputs/charts/05_vic_nsw_interconnector_flow.html" loading="lazy"></iframe>
+            </article>
+
+            <article class="chart-card wide">
+              <div class="chart-head">
+                <div>
+                  <h3>Congestion Signal Count</h3>
+                  <p>Broader interconnector stress across the network.</p>
+                  <div class="chart-meta">
+                    <span class="meta-pill">Network stress</span>
+                    <span class="meta-pill">Interval count</span>
+                  </div>
+                </div>
+                <a class="open-link" href="outputs/charts/06_congestion_signal_count.html" target="_blank">Open</a>
+              </div>
+              <iframe class="short" src="outputs/charts/06_congestion_signal_count.html" loading="lazy"></iframe>
+            </article>
+            </section>
+          </section>
+
+          <section id="visual-classification" class="chart-group">
+            <section class="grid-2">
+              <article class="chart-card wide">
+                <div class="chart-head">
+                  <div>
+                    <h3>Spike Classification Summary</h3>
+                    <p>Likely driver split for spike intervals.</p>
+                    <div class="chart-meta">
+                      <span class="meta-pill">Constraint</span>
+                      <span class="meta-pill">Interconnector</span>
+                      <span class="meta-pill">Decision layer</span>
+                    </div>
+                  </div>
+                  <a class="open-link" href="outputs/charts/07_spike_classification_summary.html" target="_blank">Open</a>
+                </div>
+                <iframe class="short" src="outputs/charts/07_spike_classification_summary.html" loading="lazy"></iframe>
+              </article>
+            </section>
+          </section>
+        </section>
+
+        <section id="story" class="view">
+          <div class="section-title">
+            <div>
+              <h2>Analyst Findings</h2>
+              <p>Market interpretation written for energy analysts, traders, and modellers.</p>
+            </div>
+          </div>
+
+          <section class="grid-3">
+            <article class="story-card">
+              <h3>Market Symptom</h3>
+              <p>NSW1 recorded 53 spike intervals above $300/MWh, while VIC1 did not breach the selected spike threshold.</p>
+              <ul>
+                <li>NSW1 became the main high-price event focus.</li>
+                <li>VIC1 remained critical for price separation analysis.</li>
+              </ul>
+            </article>
+
+            <article class="story-card red">
+              <h3>Constraint Evidence</h3>
+              <p>NSW1 spike intervals had higher average active constraint counts, but violation and marginal value evidence did not explain every spike alone.</p>
+              <ul>
+                <li>Constraint activity was relevant.</li>
+                <li>It was not a complete explanation by itself.</li>
+              </ul>
+            </article>
+
+            <article class="story-card purple">
+              <h3>Network Evidence</h3>
+              <p>Broader congestion-style signals appeared during most NSW1 spike intervals, and severe spikes aligned with price divergence.</p>
+              <ul>
+                <li>Interconnector stress was material.</li>
+                <li>Regional separation supported the network interpretation.</li>
+              </ul>
+            </article>
+          </section>
+
+          <section class="panel">
+            <h3>Final Analyst Interpretation</h3>
+            <p>
+              A price spike is not automatically constraint-driven. This project showed that NSW1 spike intervals had elevated constraint activity,
+              but the most severe price outcomes were more strongly associated with interconnector/congestion-style signals and NSW1-VIC1 price divergence.
+            </p>
+            <table>
+              <thead>
+                <tr>
+                  <th>Signal</th>
+                  <th>Evidence</th>
+                  <th>Interpretation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="tag">Price Spike</span></td>
+                  <td>53 NSW1 intervals above $300/MWh</td>
+                  <td>NSW1 was the primary high-price event region.</td>
+                </tr>
+                <tr>
+                  <td><span class="tag red">Constraint</span></td>
+                  <td>Higher active constraint count during spikes</td>
+                  <td>Relevant, but not sufficient as a full explanation.</td>
+                </tr>
+                <tr>
+                  <td><span class="tag purple">Interconnector</span></td>
+                  <td>Congestion-style signals present during most spikes</td>
+                  <td>Important evidence for network-driven behaviour.</td>
+                </tr>
+                <tr>
+                  <td><span class="tag green">Divergence</span></td>
+                  <td>307 material divergence intervals</td>
+                  <td>Regional separation was concentrated but meaningful.</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </section>
+
+        <section id="method" class="view">
+          <div class="section-title">
+            <div>
+              <h2>Methodology & Outputs</h2>
+              <p>Notebook flow, data sources, and final portfolio artifacts.</p>
+            </div>
+          </div>
+
+          <section class="grid-2">
+            <article class="panel">
+              <h3>Notebook Workflow</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Step</th>
+                    <th>Notebook</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>01</td><td>Data extraction and market context</td></tr>
+                  <tr><td>02</td><td>Base market feature engineering</td></tr>
+                  <tr><td>03</td><td>Constraint activity analysis</td></tr>
+                  <tr><td>04</td><td>Interconnector flow analysis</td></tr>
+                  <tr><td>05</td><td>Regional price divergence</td></tr>
+                  <tr><td>06</td><td>Network spike classification</td></tr>
+                  <tr><td>07</td><td>Decision intelligence</td></tr>
+                  <tr><td>08</td><td>Plotly visualisation pack</td></tr>
+                </tbody>
+              </table>
+            </article>
+
+            <article class="panel">
+              <h3>Reports & Project Artifacts</h3>
+              <p>Use these links for project review, slide creation, and portfolio discussion.</p>
+              <p><a class="open-link" href="reports/final_analyst_report.pdf" target="_blank">Final analyst report PDF</a></p>
+              <p><a class="open-link" href="docs/project_02_combined_visual_report.pdf" target="_blank">Combined visual report PDF</a></p>
+              <p><a class="open-link" href="docs/project_02_combined_visual_report.html" target="_blank">Combined visual report HTML</a></p>
+            </article>
+          </section>
+
+          <section class="panel">
+            <h3>Core Outputs</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Output</th>
+                  <th>Use</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>02_base_market_features.csv</td><td>Price, demand, spike, volatility, and time features.</td></tr>
+                <tr><td>03_market_features_with_constraints.csv</td><td>Base market data with constraint features.</td></tr>
+                <tr><td>04_market_features_with_network.csv</td><td>Market, constraints, and interconnector flow signals.</td></tr>
+                <tr><td>05_market_features_with_divergence.csv</td><td>Full feature set with NSW1-VIC1 price divergence.</td></tr>
+                <tr><td>06_network_spike_explanation.csv</td><td>Classified price spike events.</td></tr>
+                <tr><td>07_network_decision_recommendations.csv</td><td>Decision intelligence recommendations.</td></tr>
+              </tbody>
+            </table>
+          </section>
+        </section>
+      </main>
+
+      <footer>
+        Vivek Bharadwaj - Energy Market Analyst. Professional showcase version for the NEM Network Constraints & Price Divergence Intelligence System.
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    const navButtons = document.querySelectorAll(".nav-button");
+    const views = document.querySelectorAll(".view");
+    const subtabButtons = document.querySelectorAll(".subtab-button");
+    const chartGroups = document.querySelectorAll(".chart-group");
+    const topTitle = document.querySelector(".topbar h2");
+    const topCopy = document.querySelector(".topbar p");
+
+    const copy = {
+      overview: [
+        "NEM Network Constraints & Price Divergence Intelligence System",
+        "Executive view of market outcomes, key findings, and headline visuals."
+      ],
+      charts: [
+        "Visual Analysis",
+        "All Plotly chart outputs embedded from the project output folder."
+      ],
+      story: [
+        "Analyst Findings",
+        "Market reasoning and decision-support interpretation from the analysis."
+      ],
+      method: [
+        "Methodology & Outputs",
+        "Notebook workflow, analytical outputs, and report artifacts."
+      ]
+    };
+
+    navButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const view = button.dataset.view;
+        navButtons.forEach((item) => item.classList.remove("active"));
+        views.forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        document.getElementById(view).classList.add("active");
+        topTitle.textContent = copy[view][0];
+        topCopy.textContent = copy[view][1];
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    });
+
+    subtabButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const tab = button.dataset.chartTab;
+        subtabButtons.forEach((item) => item.classList.remove("active"));
+        chartGroups.forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        document.getElementById(tab).classList.add("active");
+      });
+    });
+  </script>
+</body>
+</html>
