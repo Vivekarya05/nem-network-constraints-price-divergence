@@ -11,6 +11,14 @@ It is designed as a professional Energy Market Analyst portfolio project, combin
 
 ---
 
+## Project Workflow
+
+The project follows an end-to-end market analytics workflow: ETL, PostgreSQL extraction, feature engineering, constraint analysis, interconnector flow analysis, price divergence, spike classification, decision intelligence, visualisation, dashboard design, and final analyst reporting.
+
+![NEM Network Constraints and Price Divergence Intelligence System workflow](assets/project_workflow.png)
+
+---
+
 ## Business Question
 
 **How do network constraints and interconnector flows drive price spikes, congestion, and regional price divergence in the NEM?**
